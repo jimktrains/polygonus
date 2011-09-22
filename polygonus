@@ -15,19 +15,19 @@ if [ "x$EDITOR" = "x" ]; then
     EDITOR=vi
 fi
 
-if [ $# != 1 ]; then
-    echo "Usage: $0 <string>  --- prints out the entry containg the string"
-    echo "Usage: $0 --dump    --- prints the password file to stdout"
-    echo "Usage: $0 --edit    --- edit the password file"
+if [ $# != 2 ]; then
+    echo "Usage: $0 <file> <string>  --- prints out the entry containg the string"
+    echo "Usage: $0 <file> --dump    --- prints the password file to stdout"
+    echo "Usage: $0 <file> --edit    --- edit the password file"
     echo "You will be prompted for the password"
     exit
 fi
 
-f=`gpg --decrypt passwords.txt.gpg`
+f=`gpg --decrypt $1`
 
-if [ "$1" = "--dump" ]; then
+if [ "$2" = "--dump" ]; then
     echo "$f"
-elif [ "$1" = "--edit" ]; then
+elif [ "$2" = "--edit" ]; then
     tmpfile=$(tempfile)
     trap "rm $tmpfile" EXIT
     echo "$f" > $tmpfile
@@ -37,5 +37,5 @@ elif [ "$1" = "--edit" ]; then
     fi
     rm $tmpfile
 else
-    echo "$f" | awk -v server=$1 'BEGIN{RS=""} {if(tolower($0) ~ tolower(server)){print $0 "\n"}}'
+    echo "$f" | awk -v server=$2 'BEGIN{RS=""} {if(tolower($0) ~ tolower(server)){print $0 "\n"}}'
 fi
