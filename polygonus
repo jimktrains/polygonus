@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Polygonus
 #
@@ -16,9 +16,9 @@ if [ "x$EDITOR" = "x" ]; then
 fi
 
 if [ $# != 1 ]; then
-    echo "Usage: ./password <string>  --- prints out the entry containg the string"
-    echo "Usage: ./password --dump    --- prints the password file to stdout"
-    echo "Usage: ./password --edit    --- edit the password file"
+    echo "Usage: $0 <string>  --- prints out the entry containg the string"
+    echo "Usage: $0 --dump    --- prints the password file to stdout"
+    echo "Usage: $0 --edit    --- edit the password file"
     echo "You will be prompted for the password"
     exit
 fi
@@ -29,17 +29,13 @@ if [ "$1" = "--dump" ]; then
     echo "$f"
 elif [ "$1" = "--edit" ]; then
     tmpfile=$(tempfile)
+    trap "rm $tmpfile" EXIT
     echo "$f" > $tmpfile
     $EDITOR $tmpfile
     if [ $? = 0 ]; then
          gpg --symmetric --cipher-algo AES256 --output passwords.txt.gpg $tmpfile
-        if [ $? = 0 ]; then
-            rm $tmpfile
-        fi
     fi
-    if [ -f $tmpfile ]; then
-        echo "!!!!!!WARNING!!!!!! $tmpfile STILL EXISTS AND CONTAINS PLAINTEXT PASSWORDS !!!!!!WARNING!!!!!!!"
-    fi
+    rm $tmpfile
 else
     echo "$f" | awk -v server=$1 'BEGIN{RS=""} {if(tolower($0) ~ tolower(server)){print $0 "\n"}}'
 fi
