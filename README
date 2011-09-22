@@ -1,0 +1,19 @@
+Keeps all passwords in file encrypted with gpg using AES256.
+
+To create the file initally, or edit it later,
+    ./password --edit
+
+to find a section:
+    ./password <word>
+
+The text should be in the form:
+
+    section
+    test in this
+    block is shown when
+    a match anywhere in
+    it is found
+    
+    but not this one if
+    it's not found in 
+    here
