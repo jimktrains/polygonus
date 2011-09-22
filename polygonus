@@ -40,5 +40,5 @@ elif [ "$1" = "--edit" ]; then
         echo "!!!!!!WARNING!!!!!! tmp STILL EXISTS AND CONTAINS PLAINTEXT PASSWORDS !!!!!!WARNING!!!!!!!"
     fi
 else
-    echo "$f" | awk -v server=$1 'BEGIN{RS=""} {if(tolower($0) ~ tolower(server)){print $0}}'
+    echo "$f" | awk -v server=$1 'BEGIN{RS=""} {if(tolower($0) ~ tolower(server)){print $0 "\n"}}'
 fi
