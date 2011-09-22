@@ -28,16 +28,16 @@ f=`gpg --decrypt passwords.txt.gpg`
 if [ "$1" = "--dump" ]; then
     echo "$f"
 elif [ "$1" = "--edit" ]; then
-    echo "$f" > tmp
-    $EDITOR tmp
+    echo "$f" > passwords.txt
+    $EDITOR passwords.txt
     if [ $? = 0 ]; then
-         gpg --symmetric --cipher-algo AES256 --output passwords.txt.gpg tmp
+         gpg --symmetric --cipher-algo AES256 --output passwords.txt.gpg passwords.txt
         if [ $? = 0 ]; then
-            rm tmp
+            rm passwords.txt
         fi
     fi
-    if [ -f tmp ]; then
-        echo "!!!!!!WARNING!!!!!! tmp STILL EXISTS AND CONTAINS PLAINTEXT PASSWORDS !!!!!!WARNING!!!!!!!"
+    if [ -f passwords.txt ]; then
+        echo "!!!!!!WARNING!!!!!! passwords.txt STILL EXISTS AND CONTAINS PLAINTEXT PASSWORDS !!!!!!WARNING!!!!!!!"
     fi
 else
     echo "$f" | awk -v server=$1 'BEGIN{RS=""} {if(tolower($0) ~ tolower(server)){print $0 "\n"}}'
