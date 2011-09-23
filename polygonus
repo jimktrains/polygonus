@@ -33,7 +33,7 @@ elif [ "$2" = "--edit" ]; then
     echo "$f" > $tmpfile
     $EDITOR $tmpfile
     if [ $? = 0 ]; then
-         gpg --symmetric --cipher-algo AES256 --output passwords.txt.gpg $tmpfile
+         gpg --symmetric --cipher-algo AES256 --output $1 $tmpfile
     fi
     rm $tmpfile
 else
