@@ -1,12 +1,12 @@
 Keeps all passwords in file encrypted with gpg using AES256.
 
 To create the file initally, or edit it later,
-    ./password --edit
+    ./polygonus <encrypted file> --edit
 
 to find a section:
-    ./password <word>
+    ./polygonus <encryted file> <word>
 
-The text should be in the form:
+Sections are blocks of text seperated by empty lines:
 
     section
     test in this
@@ -17,3 +17,7 @@ The text should be in the form:
     but not this one if
     it's not found in 
     here
+
+I find a handy alias is
+
+    alias project_passwd="$HOME/projects/polygonus/polygonus $HOME/projects/project_passwds/passwords.txt.gpg"
